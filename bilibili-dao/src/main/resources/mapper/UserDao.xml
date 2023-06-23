@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.UserDao">
+    <select id="getUserById" resultType="com.domin.User" parameterType="java.lang.Long">
+        select *
+        from t_user
+        where id = #{id}
+    </select>
+
+    <select id="getUserByPhone" resultType="com.domin.User" parameterType="java.lang.String">
+        select *
+        from t_user
+        where phone = #{phone}
+    </select>
+
+    <select id="getUserInfoByUserId" resultType="com.domin.UserInfo" parameterType="java.lang.Long">
+        select *
+        from t_user_info
+        where userId = #{userId}
+    </select>
+
+    <insert id="addUser" parameterType="com.domin.User" useGeneratedKeys="true" keyProperty="id">
+        insert into t_user (phone, email, password, salt)
+        values (#{phone}, #{email}, #{password}, #{salt})
+    </insert>
+
+    <insert id="addUserInfo" parameterType="com.domin.UserInfo">
+        insert into t_user_info (userId, nick, avatar, sign, gender, birth)
+        values (#{userId}, #{nick}, #{avatar}, #{sign}, #{gender}, #{birth})
+    </insert>
+
+    <update id="updateUserInfosByUserId" parameterType="com.domin.UserInfo">
+        update t_user_info set
+        <if test="nick!=null and nick !=''">
+            nick =#{nick},
+        </if>
+        <if test="avatar!=null">
+            avatar =#{avatar},
+        </if>
+        <if test="sign!=null">
+            sign =#{sign},
+        </if>
+        <if test="gender!=null and gender !=''">
+            gender =#{gender},
+        </if>
+        <if test="birth!=null and birth !=''">
+            birth =#{birth},
+        </if>
+
+        updateTime =#{updateTime}
+        where userId=#{userId}
+    </update>
+
+
+    <select id="getUserInfoByUserIds" resultType="com.domin.UserInfo">
+        select * from t_user_info
+        where 1=1
+        <if test="userIdList!=null and userIdList.size>0">
+            and userId in
+            <foreach collection="userIdList" item="userId" open="(" close=")" separator="," index="index">
+                #{userId}
+            </foreach>
+        </if>
+    </select>
+
+
+    <select id="pageCountUserInfo" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(1) from t_user_info where 1=1
+        <if test="nick!=null and nick!='' ">
+            and nick like %#{nick}%
+        </if>
+    </select>
+
+    <select id="pageUserListInfos" parameterType="java.util.Map" resultType="com.domin.UserInfo">
+        select * from t_user_info where 1=1
+        <if test="nick!=null and nick!='' ">
+            and nick like %#{nick}%
+        </if>
+        order by id desc
+        limit #{start},#{limit}
+    </select>
+
+    <delete id="deleteRefreshToken">
+        delete
+        from t_refresh_token
+        where refreshtoken = #{refreshToken}
+    </delete>
+
+    <insert id="addRefreshToken">
+        insert into t_refresh_token (userId, refreshToken)
+        values (#{userId}, #{refreshToken})
+    </insert>
+
+
+    <select id="getRefreshToken" resultType="com.domin.RefreshToken" parameterType="java.lang.String">
+        select * from t_refresh_token where refreshToken=#{refreshToken}
+    </select>
+
+</mapper>
