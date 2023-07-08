@@ -16,7 +16,7 @@ public class RocketMQUtil {
     }
 
 
-    public static void asyncSendMsg(DefaultMQProducer producer, Message msg) throws MQBrokerException, RemotingException, InterruptedException, MQClientException {
+    public static void asyncSendMsg(DefaultMQProducer producer, Message msg) throws RemotingException, InterruptedException, MQClientException {
         int messageCount = 2;
 
         //TODO 计时器
@@ -30,7 +30,6 @@ public class RocketMQUtil {
                     countDownLatch.countDown();
                     System.out.println(sendResult.getMsgId());
                 }
-
                 @Override
                 public void onException(Throwable throwable) {
                     countDownLatch.countDown();

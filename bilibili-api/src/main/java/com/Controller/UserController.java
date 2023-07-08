@@ -84,8 +84,8 @@ public class UserController {
         params.put("userId", userId);
         PageResult<UserInfo> result = userService.getPageUserList(params);
         if (result.getTotal() > 0) {
-            List<UserInfo> checkedUserInfoList = userFollowingService.checkFollowingStatus(result.getData(), userId);
-            result.setData(checkedUserInfoList);
+            List<UserInfo> checkedUserInfoList = userFollowingService.checkFollowingStatus(result.getList(), userId);
+            result.setList(checkedUserInfoList);
         }
         return R.success(result);
     }

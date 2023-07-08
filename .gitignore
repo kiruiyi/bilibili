@@ -1,0 +1,4 @@
+# Project exclude paths
+/bilibili-api/target/
+/bilibili-dao/target/
+/bilibili-service/target/

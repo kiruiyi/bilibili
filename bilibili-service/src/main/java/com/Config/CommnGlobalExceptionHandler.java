@@ -19,14 +19,14 @@ public class CommnGlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
-    public R<String> commonExceptionHandler(HttpServletRequest request, Exception e) {
+    public R<String> commonExceptionHandler(Exception e) {
         String msg = e.getMessage();
         if (e instanceof ConditionException) {
-        String errcode = ((ConditionException) e).getCode();
-        return new R<>(errcode, msg);
-    }
+            String errcode = ((ConditionException) e).getCode();
+            return new R<>(errcode, msg);
+        }
         return new R<>("500", msg);
-}
+    }
 
 
 }

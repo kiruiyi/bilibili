@@ -7,10 +7,10 @@ import java.util.List;
 public class PageResult<T> {
 
     private Integer total;
-    private List<T> data;
+    private List<T> list;
 
     public PageResult(Integer total, List<T> list) {
         this.total = total;
-        data = list;
+        this.list = list;
     }
 }
